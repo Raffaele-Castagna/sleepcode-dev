@@ -1,6 +1,8 @@
 import React from 'react';
 import { IoIosClose } from "react-icons/io";
 import Login from './Login';
+import Registr from './Registr';
+import PwReset from './PwReset';
 
 type AuthModelProps = {
     
@@ -21,7 +23,7 @@ const AuthModel:React.FC<AuthModelProps> = () => {
                     > <IoIosClose className="h-5 w-5" />
                     </button>
                 </div>
-                <Login />
+                <PwReset />
             </div>
         </div>
     </div>
