@@ -20,8 +20,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = !getApps.length ? initializeApp(firebaseConfig) : getApp();
-// gAnal, non dobbiamo rimuoverle
-const analytics = getAnalytics(app);
 
 const auth = getAuth(app);
 const firestore = getFirestore(app);

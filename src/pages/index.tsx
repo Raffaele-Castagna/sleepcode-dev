@@ -1,10 +1,10 @@
-import Head from 'next/head'
-import { Inter } from 'next/font/google'
+import TopNavBar from '@/components/TopNavBar/TopNavBar'
 
 export default function Home() {
   return (
     <>
-      <main><h1>Hello World</h1></main>
+      <main className='bg-dark-layer-2 min-h-screen'>
+        <TopNavBar/></main>
     </>
-  )
+  );
 }
