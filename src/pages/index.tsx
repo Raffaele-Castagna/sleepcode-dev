@@ -1,3 +1,4 @@
+import ProblemsTable from '@/components/ProblemTable/ProblemsTable';
 import TopNavBar from '@/components/TopNavBar/TopNavBar'
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
         </th>
       </tr>
     </thead>
+    <ProblemsTable/>
   </table>
   </div></main>
     </>
