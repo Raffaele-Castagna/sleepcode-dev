@@ -17,10 +17,12 @@ const TopNavBar:React.FC<TopNavBarProps> = () => {
     const setAuthModalState = useSetRecoilState(authModalState)
     return (<nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
     <div className={`flex w-full items-center justify-between max-w-[1200px] mx-auto`}>
-        <Link href='/' className='h-[22px] flex-1'>
-            <img src='/new_logo.svg' alt='Logo' className='h-full' />
-        </Link>
-
+        <div className="flex items-center justify-end mx-auto space-x-3">
+        
+        <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
+        <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
+        <Link href='/' className='h-[22px] flex-1'>Catalogo</Link>
+        </div>
         <div className='flex items-center space-x-4 flex-1 justify-end'>
             {!user && (
             <Link href='/auth'>
