@@ -11,7 +11,7 @@ export const problems: Problem[] = [
 	{
 		id: "two-sum",
 		title: "Two Sum",
-		difficulty: "Easy",
+		difficulty: "Facile",
 		category: "Array",
 		order: 1,
 		videoId: "NLhkpg9p7VQ",
@@ -19,7 +19,7 @@ export const problems: Problem[] = [
 	{
 		id: "reverse-linked-list",
 		title: "Reverse Linked List",
-		difficulty: "Hard",
+		difficulty: "Difficle",
 		category: "Linked List",
 		order: 2,
 		videoId: "",
@@ -27,7 +27,7 @@ export const problems: Problem[] = [
 	{
 		id: "jump-game",
 		title: "Jump Game",
-		difficulty: "Medium",
+		difficulty: "Medio",
 		category: "Dynamic Programming",
 		order: 3,
 		videoId: "",
@@ -35,7 +35,7 @@ export const problems: Problem[] = [
 	{
 		id: "valid-parentheses",
 		title: "Valid Parentheses",
-		difficulty: "Easy",
+		difficulty: "Facile",
 		category: "Stack",
 		order: 4,
 		videoId: "xty7fr-k0TU",
@@ -43,7 +43,7 @@ export const problems: Problem[] = [
 	{
 		id: "search-a-2d-matrix",
 		title: "Search a 2D Matrix",
-		difficulty: "Medium",
+		difficulty: "Difficile",
 		category: "Binary Search",
 		order: 5,
 		videoId: "ZfFl4torNg4",
@@ -51,7 +51,7 @@ export const problems: Problem[] = [
 	{
 		id: "container-with-most-water",
 		title: "Container With Most Water",
-		difficulty: "Medium",
+		difficulty: "Medio",
 		category: "Two Pointers",
 		order: 6,
 		videoId: "",
@@ -59,7 +59,7 @@ export const problems: Problem[] = [
 	{
 		id: "merge-intervals",
 		title: "Merge Intervals",
-		difficulty: "Medium",
+		difficulty: "Medio",
 		category: "intervals",
 		order: 7,
 		videoId: "",
@@ -67,7 +67,7 @@ export const problems: Problem[] = [
 	{
 		id: "maximum-depth-of-binary-tree",
 		title: "Maximum Depth of Binary Tree",
-		difficulty: "Easy",
+		difficulty: "Facile",
 		category: "Tree",
 		order: 8,
 		videoId: "4qYTqOiRMoM",
@@ -75,7 +75,7 @@ export const problems: Problem[] = [
 	{
 		id: "best-time-to-buy-and-sell-stock",
 		title: "Best Time to Buy and Sell Stock",
-		difficulty: "Easy",
+		difficulty: "Difficile",
 		category: "Array",
 		order: 9,
 		videoId: "",
@@ -83,7 +83,7 @@ export const problems: Problem[] = [
 	{
 		id: "subsets",
 		title: "Subsets",
-		difficulty: "Medium",
+		difficulty: "Medio",
 		category: "Backtracking",
 		order: 10,
 		videoId: "",

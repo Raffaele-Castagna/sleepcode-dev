@@ -22,7 +22,7 @@ const closeYT = () => {
         <>
         <tbody className="text-white">
             {problems.map((doc,idx) => {
-                const diffcolor = doc.difficulty === "Easy" ? "text-dark-green-s" : doc.difficulty === "Medium" ? "text-dark-yellow" : "text-dark-pink";
+                const diffcolor = doc.difficulty === "Facile" ? "text-dark-green-s" : doc.difficulty === "Medio" ? "text-dark-yellow" : "text-dark-pink";
                 return (
                     <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={doc.id}>
                         <th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
