@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 type RegistrProps = {
     
@@ -38,7 +39,8 @@ const Registr:React.FC<RegistrProps> = () => {
             if (!newUser) return;
             router.push('/')
         }catch (error:any){
-            alert(error.message)
+            alert(error);
+            toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark" });
         }
 
     };
