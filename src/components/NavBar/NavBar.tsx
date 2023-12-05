@@ -21,7 +21,7 @@ const NavBar:React.FC<NavBarProps> = () => {
                 <button className="bg-dark-fill-2 text-white px-2 py-1 sm:px-4 rounded-md text-sm font-medium
                 hover:text-brand-orange hover:bg-white hover:border-2 hover:border-brand-orange border-transparent
                 transition duration-300 ease-in ease-out"
-                onClick={handleClick}>Sign in</button>
+                onClick={handleClick}>Entra</button>
             </div>
     </div>
 }

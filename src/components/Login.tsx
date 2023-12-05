@@ -36,13 +36,15 @@ const Login:React.FC<LoginProps> = () => {
             if (!newUser) return;
             router.push("/")
          } catch(error:any){
+            alert(error.message)
             toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
             }
         }
-
         useEffect(() => {
-            if(error) toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
+            if (error) toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
         })
+
+    
     
     return <form className="space-y-6 px-6 pb-4" onSubmit={handleLogin}>
         <h3 className="text-x1 font-medium text-white"> Login </h3>
