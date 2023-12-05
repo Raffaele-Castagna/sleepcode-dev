@@ -40,7 +40,7 @@ useEffect(() => {
     {showTimer ? (
         <div className='flex items-center space-x-2 bg-dark-fill-3 p-1.5 cursor-pointer hover:bg-dark-fill-2'>
             <div>{formatTime(time)}</div>
-            <FiRefreshCcw onClick={() => {setShowTimer(false)
+            <FiRefreshCcw onClick={() => {setPause(false)
             setTime(0)}}></FiRefreshCcw> {
                 !pause && (
                     <div onClick={() => setPause(true)}>
