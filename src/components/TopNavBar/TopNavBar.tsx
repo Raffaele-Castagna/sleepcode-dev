@@ -21,7 +21,7 @@ const TopNavBar:React.FC<TopNavBarProps> = () => {
         
         <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
         <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
-        <Link href='/' className='h-[22px] flex-1'>Catalogo</Link>
+        <Link href='/catalogue' className='h-[22px] flex-1'>Catalogo</Link>
         </div>
         <div className='flex items-center space-x-4 flex-1 justify-end'>
             {!user && (
