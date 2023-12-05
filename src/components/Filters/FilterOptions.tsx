@@ -1,3 +1,4 @@
+import { Menu } from '@headlessui/react';
 import React from 'react';
 
 type FilterOptionsProps = {
@@ -5,7 +6,19 @@ type FilterOptionsProps = {
 };
 
 const FilterOptions:React.FC<FilterOptionsProps> = () => {
+    return (
+    <>
+
+        <p className='text-white'>Filtro: </p>
+        
     
-    return <div>Have a good coding</div>
+    
+    
+    
+    
+    </>
+    
+    
+        )
 }
 export default FilterOptions;

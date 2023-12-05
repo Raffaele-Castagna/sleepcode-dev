@@ -1,3 +1,4 @@
+import FilterOptions from '@/components/Filters/FilterOptions';
 import ProblemsTable from '@/components/ProblemTable/ProblemsTable';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
 import React from 'react';
@@ -14,6 +15,8 @@ const catalogue:React.FC<catalogueProps> = () => {
             <TopNavBar/>
             <h1 className='text-2xl text-center text-white dark:text-white font-medium uppercase mt-10 mb-5'> DAJE ROMA 
       </h1>
+
+      <div className='justify-center flex items-center '><FilterOptions /></div>
     
       <div className='relative overflow-x-auto mx-auto px-6 pb-10'>
       <table className='text-sm text-left text-gray-500 dark:text-gray-400 sm:w-7/12 w-full max-w-[1200px] mx-auto'>
