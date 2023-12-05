@@ -7,6 +7,7 @@ import { useSetRecoilState } from 'recoil';
 import { authModalState } from '@/atoms/authModelAtom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { BsList } from 'react-icons/bs';
+import Timer from '../Timer.tsx/Timer';
 
 
 
@@ -19,7 +20,7 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
     const setAuthModalState = useSetRecoilState(authModalState)
     return (
     <nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
-    <div className={`flex w-full items-center justify-between max-w-full mx-auto`}>
+    <div className={`flex w-full items-center justify-between ${!problemPage ? "max-w-[1200px] mx-auto" : ""}`}>
         <div className="flex items-center justify-between mx-0 max-w-xs space-x-3">
         <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
         <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
@@ -37,12 +38,17 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
                 
         )}
         
-        <div className='flex-initial items-center space-x-4 ms-8 justify-end max-w-' >
+        
+        <div className='flex items-center space-x-4 justify-end ' >
+        {problemPage && (
+            <Timer/>
+        )}
             {!user && (
             <Link href='/auth'>
                 <button className='bg-dark-fill-3 py-1 px-2 cursor-pointer rounded ' onClick={ () => setAuthModalState ((prev) => ({...prev,isOpen:true, type:"login"}))} >Entra</button>
             </Link>
             )}
+            
             {user && (
                 <div className="cursor-pointer group relative">
                     <img src="/avatar.png" alt="user profile img" className="h-8 w-8 rounded-full"></img>
