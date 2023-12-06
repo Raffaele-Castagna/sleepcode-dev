@@ -1,7 +1,7 @@
 import { problems } from '@/Problems/Problems';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { BsCheckCircle } from 'react-icons/bs';
+import { BsCheckCircle, BsHeart, BsHeartFill } from 'react-icons/bs';
 import {AiFillYoutube} from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import YouTube from 'react-youtube';
@@ -25,8 +25,9 @@ const closeYT = () => {
                 const diffcolor = doc.difficulty === "Facile" ? "text-dark-green-s" : doc.difficulty === "Medio" ? "text-dark-yellow" : "text-dark-pink";
                 return (
                     <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={doc.id}>
-                        <th className='px-2 py-4 font-medium whitespace-nowrap text-dark-green-s'>
-                            <BsCheckCircle fontSize={"18"} width="18" />
+                        <th>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> <BsCheckCircle fontsize={"18"} width="18"/>  </div>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> <BsHeartFill fontsize={"18"} width="18"></BsHeartFill></div>
                         </th>
                         <td className="px-6 py-4">
                             <Link className="hover:text-blue-600 cursor-pointer" href={`/problems/${doc.id}`}>
