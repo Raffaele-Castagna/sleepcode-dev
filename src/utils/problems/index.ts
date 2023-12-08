@@ -15,7 +15,7 @@ export const problems: ProblemMap = {
     "two-sum": twoSum,
     "reverse-linked-list": reverseLinkedList,
     "jump-game": jumpGame,
-    "valid-parenthesis": validParentheses,
+    "valid-parentheses": validParentheses,
     "search-a-2d-matrix": search2DMatrix,
 
     

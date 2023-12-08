@@ -12,7 +12,7 @@ const Workspace:React.FC<WorkspaceProps> = ({problem}) => {
     
     return <Split className="split">
         <Description problem={problem}></Description>
-        <Editor></Editor>
+        <Editor problem={problem}></Editor>
 
     </Split>
 

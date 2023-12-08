@@ -51,6 +51,11 @@ export const jumpGame: Problem = {
 			explanation:
 				"Arriveremo sempre al 3 indice qualsiasi scelta prendiamo. Il salto massimo che possiamo fare è 0, quindi è impossibile raggiungere l'ultimo indice.",
 		},
+		{
+			id:2,
+			inputText: `nums = [0,0]`,
+			outputText: `false`,
+		}
 	],
 	constraints: `<li class='mt-2'><code>1 <= nums.length <= 10^4</code></li>
     <li class='mt-2'><code>0 <= nums[i] <= 10^5</code></li>`,

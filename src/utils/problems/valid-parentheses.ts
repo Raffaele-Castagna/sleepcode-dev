@@ -50,7 +50,7 @@ export const validParentheses: Problem = {
 		},
 	],
 	constraints: `<li class='mt-2'><code>1 <= s.length <= 10<sup>4</sup></code></li>
-<li class='mt-2 '><code>s</code> l'input è fatto da sole parentesi <code class="text-md">'()[]{}'</code>.</li>`,
+<li class='mt-2 '><code>s</code> è fatto da sole parentesi <code class="text-md">'()[]{}'</code>.</li>`,
 	handlerFunction: validParenthesesHandler,
 	starterCode: starterCodeValidParenthesesJS,
 	starterFunctionName: "function validParentheses(",
