@@ -40,7 +40,7 @@ const handlerTwoSum= (fn:any) => {
  export const twoSum: Problem = {
      id: "two-sum",
      title: "1. Two Sum",
-     problemStatement: `',
+     problemStatement: `
   Dato un array di integer <code>nums</code> e un integer <code>target</code>, ritorna
   <em>gli indici di due numeri tali che la loro somma sia</em> <code>target</code>.
 </p>
