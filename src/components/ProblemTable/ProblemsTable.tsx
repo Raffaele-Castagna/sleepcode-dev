@@ -1,19 +1,24 @@
 import { problems } from '@/Problems/Problems';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsCheckCircle, BsHeart, BsHeartFill } from 'react-icons/bs';
 import {AiFillYoutube} from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import YouTube from 'react-youtube';
+
+import { firestore } from '@/firebase/firebase';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { DBproblem } from '@/utils/problems/GenericProblem/genericProblem';
 type ProblemsTableProps = {
-    
+    setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ProblemsTable:React.FC<ProblemsTableProps> = () => {
+const ProblemsTable:React.FC<ProblemsTableProps> = ({setLoadingProblems}) => {
 const [youtubePlay,setYoutubePlay] = useState ( {
     isOpen: false,
     video: ""
 })
+const problems = useGetProblems(setLoadingProblems);
 
 const closeYT = () => {
     setYoutubePlay({isOpen:false,video:""})
@@ -21,28 +26,28 @@ const closeYT = () => {
     return (
         <>
         <tbody className="text-white">
-            {problems.map((doc,idx) => {
-                const diffcolor = doc.difficulty === "Facile" ? "text-dark-green-s" : doc.difficulty === "Medio" ? "text-dark-yellow" : "text-dark-pink";
+            {problems.map((problem,idx) => {
+                const diffcolor = problem.difficulty === "Facile" ? "text-dark-green-s" : problem.difficulty === "Medio" ? "text-dark-yellow" : "text-dark-pink";
                 return (
-                    <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={doc.id}>
+                    <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
                         <th>
                             <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> <BsCheckCircle fontsize={"18"} width="18"/>  </div>
                             <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> <BsHeartFill fontsize={"18"} width="18"></BsHeartFill></div>
                         </th>
                         <td className="px-6 py-4">
-                            <Link className="hover:text-blue-600 cursor-pointer" href={`/problems/${doc.id}`}>
-                                {doc.title}
+                            <Link className="hover:text-blue-600 cursor-pointer" href={`/problems/${problem.id}`}>
+                                {problem.title}
                             </Link>
                         </td>
                         <td className={`px-6 py-4 ${diffcolor}`}>
-                            {doc.difficulty}
+                            {problem.difficulty}
                         </td>
                         <td className={`px-6 py-4`}>
-                            {doc.category}
+                            {problem.category}
                         </td>
                         <td className={`px-6 py-4`}>
-                            {doc.videoId ? (
-                                <AiFillYoutube fontsize={"18"} className="cursor-pointer hover:text-red-500" onClick = { () => setYoutubePlay({isOpen:true, video: doc.videoId as string}) } />
+                            {problem.videoId ? (
+                                <AiFillYoutube fontsize={"18"} className="cursor-pointer hover:text-red-500" onClick = { () => setYoutubePlay({isOpen:true, video: problem.videoId as string}) } />
                             ) : ( <p className='text-gray-400'>N/A</p>)
 
                             }
@@ -74,3 +79,27 @@ const closeYT = () => {
     )
 }
 export default ProblemsTable;
+
+
+function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>) {
+    const [problems, setProblems] = useState<DBproblem[]>([]);
+
+    useEffect(() => {
+        const getProblems = async () => {
+            setLoadingProblems(true);
+            const q = query(collection(firestore,"problems"),orderBy("order","asc"))
+            const querySnapshot = await getDocs(q);
+            console.log(querySnapshot)
+            const tmp: DBproblem[] = [];
+            querySnapshot.forEach((doc) => {
+                tmp.push({id:doc.id,...doc.data()} as DBproblem)
+            })
+            setProblems(tmp);
+            setLoadingProblems(false);
+            
+        }
+
+        getProblems()
+    },[setLoadingProblems])
+    return problems;
+}

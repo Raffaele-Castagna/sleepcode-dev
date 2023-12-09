@@ -16,3 +16,13 @@ export type Example = {
 	explanation?: string;
 	img?: string;
 };
+
+export type DBproblem = {
+	id:string;
+	title:string;
+	category:string;
+	difficulty:string;
+	liked: number;
+	order: number;
+	videId?: string;
+}

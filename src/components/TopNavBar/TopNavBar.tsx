@@ -27,6 +27,7 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
         <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
         <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
         <Link href='/catalogue' className='h-[22px] flex-1'>Catalogo</Link>
+        <Link href="/AdminPanel" className='h-[22px] flex'>Admin Panel</Link>
         </div>
         {problemPage && (
 

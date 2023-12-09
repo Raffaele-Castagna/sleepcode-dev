@@ -1,6 +1,5 @@
 import AuthModel from '@/components/AuthModel';
 import Login from '@/components/Login';
-import NavBar from '@/components/NavBar/NavBar';
 import React, { useEffect, useState } from 'react';
 import { authModalState } from '@/atoms/authModelAtom';
 import { useRecoilValue } from 'recoil';
@@ -21,7 +20,7 @@ const AuthPage:React.FC<AuthPageProps> = () => {
     useEffect(() => {
     })
     return <div className="bg-dark-layer-2 h-screen relative">
-    <TopNavBar />
+    <TopNavBar problemPage={false} />
     <div className="flex items-center justify-center h-[calc(100vh-5rem)] pointer-events-none select-none bg-cover bg-center objec relative">
         <img src="/totti.jpg" alt="Capitano img" className="w-full h-full object-cover absolute"/>
     </div>
