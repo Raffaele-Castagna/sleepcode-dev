@@ -22,7 +22,7 @@ export type DBproblem = {
 	title:string;
 	category:string;
 	difficulty:string;
-	liked: number;
+	likes: number;
 	order: number;
 	videId?: string;
 }

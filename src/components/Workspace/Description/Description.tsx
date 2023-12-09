@@ -1,5 +1,9 @@
-import { Problem } from '@/utils/problems/GenericProblem/genericProblem';
-import React from 'react';
+import CircleSkeleton from '@/components/LoadingSkeletons/CircleSkeleton';
+import RectangleSkeleton from '@/components/LoadingSkeletons/RectangleSkeleton';
+import { firestore } from '@/firebase/firebase';
+import { DBproblem, Problem } from '@/utils/problems/GenericProblem/genericProblem';
+import { doc, getDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { AiFillDislike, AiFillHeart, AiFillLike } from 'react-icons/ai';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { TiStarOutline } from "react-icons/ti"
@@ -9,6 +13,7 @@ type DescriptionProps = {
 };
 
 const Description:React.FC<DescriptionProps> = ({problem}) => {
+    const {currentProblem,loading,problemDiff} = useGetCurrentProblem(problem.id);
     
     return (<div className='bg-dark-layer-1'>
     {/* TAB */}
@@ -25,21 +30,33 @@ const Description:React.FC<DescriptionProps> = ({problem}) => {
                 <div className='flex space-x-4'>
                     <div className='flex-1 mr-2 text-lg text-white font-medium'>{problem.title}</div>
                 </div>
+                {!loading && currentProblem && (
                 <div className='flex items-center mt-3'>
                     <div
-                        className={`text-olive bg-olive inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}
+                        className={`${problemDiff} inline-block rounded-[21px] bg-opacity-[.15] px-2.5 py-1 text-xs font-medium capitalize `}
                     >
-                        {}
+                        {currentProblem.difficulty}
                     </div>
                     <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
                         <BsCheck2Circle />
                     </div>
                     <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-                        <AiFillHeart />
-                        <span className='text-xs'>120</span>
+                        <AiFillHeart /> 
+                        <span className='text-xs'>{currentProblem.likes }</span>
                     </div>
                 </div>
+                )}
 
+                {loading && (
+                    <div className="mt-3 flex space-x-2">
+                        <RectangleSkeleton />
+                        <CircleSkeleton />
+                        <RectangleSkeleton />
+                        <RectangleSkeleton />
+                        <CircleSkeleton />
+                    </div>
+
+                )}
                 {/* Problem Statement(paragraphs) */}
                 <div className='text-white text-sm'>
                     <div dangerouslySetInnerHTML={{__html: problem.problemStatement}}>
@@ -89,3 +106,29 @@ const Description:React.FC<DescriptionProps> = ({problem}) => {
 };
 
 export default Description;
+
+
+function useGetCurrentProblem(problemId:string){
+    const [currentProblem,setCurrentProblem] = useState<DBproblem | null>(null);
+    const [loading,setLoading] = useState<boolean>(true);
+    const [problemDiff,setProblemDiff] = useState<string>("");
+    useEffect(() => {
+        const getCurrentProblem = async () => {
+            setLoading(true)
+            const docRef = doc(firestore,"problems",problemId)
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()){
+                const problem = docSnap.data();
+                setCurrentProblem({id:docSnap.id, ...problem} as DBproblem)
+                setProblemDiff(
+                    problem.difficulty ===  "Facile" ? " bg-olive text-dark-green-s" : problem.difficulty === "Medio" ? " bg-dark-yellow text-dark-yellow" : "bg-dark-pink text-dark-pink" 
+                )
+            }
+            console.log(docSnap)
+            setLoading(false)
+        };
+        getCurrentProblem();
+    },[problemId])
+
+    return {currentProblem,loading,problemDiff};
+}

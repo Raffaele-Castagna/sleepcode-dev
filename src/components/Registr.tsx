@@ -1,10 +1,11 @@
 import { authModalState } from '@/atoms/authModelAtom';
-import { auth } from '@/firebase/firebase';
+import { auth, firestore } from '@/firebase/firebase';
 import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { doc, setDoc } from 'firebase/firestore';
 
 type RegistrProps = {
     
@@ -33,15 +34,29 @@ const Registr:React.FC<RegistrProps> = () => {
     const handleRegister = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
+            toast.loading("Sto creando il tuo account",{position:"top-center",toastId:"loading",theme:"dark"})
             if (inputs.password != inputs.confirmpassword) { (alert("Password diverse"))
                                                              return;}
             const newUser = await createUserWithEmailAndPassword(inputs.email,inputs.password);
             if (!newUser) return;
+            const userData = {
+                uid: newUser.user.uid,
+                email: newUser.user.email,
+                displayName: inputs.displayName,
+                createdAt:Date.now(),
+                updatedAt:Date.now(),
+                likedP:[],
+                solvedProblems:[],
+                role: "User"
+            }
+            await setDoc(doc(firestore,"users",newUser.user.uid),userData)
             router.push('/')
         }catch (error:any){
-            alert(error);
-            toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark" });
+            toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark"});
+        }finally {
+            toast.dismiss("loading")
         }
+
 
     };
 
