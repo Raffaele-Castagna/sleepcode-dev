@@ -1,9 +1,10 @@
 import CircleSkeleton from '@/components/LoadingSkeletons/CircleSkeleton';
 import RectangleSkeleton from '@/components/LoadingSkeletons/RectangleSkeleton';
-import { firestore } from '@/firebase/firebase';
+import { auth, firestore } from '@/firebase/firebase';
 import { DBproblem, Problem } from '@/utils/problems/GenericProblem/genericProblem';
 import { doc, getDoc } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiFillDislike, AiFillHeart, AiFillLike } from 'react-icons/ai';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { TiStarOutline } from "react-icons/ti"
@@ -14,6 +15,7 @@ type DescriptionProps = {
 
 const Description:React.FC<DescriptionProps> = ({problem}) => {
     const {currentProblem,loading,problemDiff} = useGetCurrentProblem(problem.id);
+    const {likes,solved} = useGetUserDataForProblem(problem.id);
     
     return (<div className='bg-dark-layer-1'>
     {/* TAB */}
@@ -37,11 +39,15 @@ const Description:React.FC<DescriptionProps> = ({problem}) => {
                     >
                         {currentProblem.difficulty}
                     </div>
-                    <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200 text-green-s text-dark-green-s'>
-                        <BsCheck2Circle />
+                    <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200'>
+                        {solved && ( <BsCheck2Circle className="text-green-500" />)}
+                        {!solved && ( <BsCheck2Circle className="text-gray-400" />)}
                     </div>
                     <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
-                        <AiFillHeart /> 
+                        {likes && (
+                            <AiFillHeart className="text-red-600"/> 
+                        )}
+                        {!likes && (<AiFillHeart /> )}
                         <span className='text-xs'>{currentProblem.likes }</span>
                     </div>
                 </div>
@@ -124,11 +130,38 @@ function useGetCurrentProblem(problemId:string){
                     problem.difficulty ===  "Facile" ? " bg-olive text-dark-green-s" : problem.difficulty === "Medio" ? " bg-dark-yellow text-dark-yellow" : "bg-dark-pink text-dark-pink" 
                 )
             }
-            console.log(docSnap)
             setLoading(false)
         };
         getCurrentProblem();
     },[problemId])
 
     return {currentProblem,loading,problemDiff};
+}
+
+function useGetUserDataForProblem(problemId:string) {
+    const [data,setData] = useState({likes:false,solved:false})
+    const [user] = useAuthState(auth);
+    useEffect(() =>{
+        const getGetUserDataForProblem = async () => {
+            const userRef = doc(firestore,"users",user!.uid)
+            const userSnap = await getDoc(userRef)
+            if (userSnap.exists()){
+                const Userdata = userSnap.data();
+                const {solvedProblems,likedP} = Userdata;
+    
+                setData({
+                    likes:likedP.includes(problemId),
+                    solved:solvedProblems.includes(problemId),
+                })
+            }else {
+                console.log("doesn't exist")
+            }
+
+        }
+       if(user){ getGetUserDataForProblem()};
+       return () => setData({likes:false,solved:false})
+        },[problemId,user])
+
+
+        return {...data,setData}
 }
