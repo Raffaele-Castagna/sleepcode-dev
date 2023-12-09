@@ -22,27 +22,17 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
     const setAuthModalState = useSetRecoilState(authModalState)
     return (
     <nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
-    <div className={`flex w-full items-center justify-between ${!problemPage ? "max-w-[1200px] mx-auto" : ""}`}>
+    <div className={`flex w-full items-center justify-between `}>
         <div className="flex items-center justify-between mx-0 max-w-xs space-x-3">
         <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
         <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
         <Link href='/catalogue' className='h-[22px] flex-1'>Catalogo</Link>
         <Link href="/AdminPanel" className='h-[22px] flex'>Admin Panel</Link>
         </div>
-        {problemPage && (
-
-            <div className='flex items-center gap-4 justify-center'>
-                <div className="flex items-center justify-center rounded dark-fill-3 hover:bg-dark-fill-3 h-8 w-8 cursor-pointer"> <FaChevronLeft></FaChevronLeft></div>
-                <Link href="/catalogue" className='flex items-center gap-2 justify-between font-medium max-w-[170px] text-dark-grey-8 cursor-pointer'> <BsList /> <p> Lista Problemi </p>
-                </Link>
-                
-                <div className="flex items-center justify-center rounded dark-fill-3  hover:bg-dark-fill-3 h-8 w-8 cursor-pointer"> <FaChevronRight></FaChevronRight></div>
-            </div>
-                
-        )}
+    
         
         
-        <div className='flex items-center space-x-4 justify-end ' >
+        <div className='flex items-center space-x-4 justify-between ' >
         {problemPage && (
             <Timer/>
         )}

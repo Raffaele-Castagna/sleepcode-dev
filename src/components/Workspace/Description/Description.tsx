@@ -2,20 +2,60 @@ import CircleSkeleton from '@/components/LoadingSkeletons/CircleSkeleton';
 import RectangleSkeleton from '@/components/LoadingSkeletons/RectangleSkeleton';
 import { auth, firestore } from '@/firebase/firebase';
 import { DBproblem, Problem } from '@/utils/problems/GenericProblem/genericProblem';
-import { doc, getDoc } from 'firebase/firestore';
+import { User } from '@nextui-org/react';
+import { Transaction } from '@uiw/react-codemirror';
+import { doc, getDoc, runTransaction } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { AiFillDislike, AiFillHeart, AiFillLike } from 'react-icons/ai';
 import { BsCheck2Circle } from 'react-icons/bs';
 import { TiStarOutline } from "react-icons/ti"
+import { toast } from 'react-toastify';
 
 type DescriptionProps = {
     problem: Problem;
 };
 
 const Description:React.FC<DescriptionProps> = ({problem}) => {
-    const {currentProblem,loading,problemDiff} = useGetCurrentProblem(problem.id);
-    const {likes,solved} = useGetUserDataForProblem(problem.id);
+    const [user] = useAuthState(auth);
+    const {currentProblem,loading,problemDiff,setCurrentProblem} = useGetCurrentProblem(problem.id);
+    const {likes,solved,setData} = useGetUserDataForProblem(problem.id);
+
+    const handleLike = async() =>{
+        if (!user) {
+            toast.error("Per mettere un like devi essere loggato",{ position: "top-center", autoClose:3000,  theme:"dark"})
+
+        return;
+        }
+        //transaction for atomicity
+        await runTransaction(firestore,async(transaction) => {
+            const userRef = doc(firestore,"users",user.uid)
+            const problemRef = doc(firestore,"problems",problem.id)
+            const userDoc = await transaction.get(userRef)
+            const problemDoc = await transaction.get(problemRef)
+            if (userDoc.exists() && problemDoc.exists()){
+                if (likes){
+                    //user -> remove liked && -1 to db problems
+                    transaction.update(userRef,{likedP: userDoc.data().likedP.filter((id:string) => id !== problem.id)
+                    })
+                    transaction.update(problemRef,{likes:problemDoc.data().likes - 1})
+
+                    setCurrentProblem((prev) => (prev ? { ...prev, likes: prev.likes - 1 } : null));
+                    setData((prev) => ({...prev,likes:false}))
+                }else {
+                    //niente like precedente
+                    transaction.update(userRef,{
+                        likedP: [...userDoc.data().likedP, problem.id]
+                    })
+                    transaction.update(problemRef,{
+                        likes: problemDoc.data().likes + 1
+                    })
+                    setCurrentProblem((prev) => (prev ? { ...prev, likes: prev.likes + 1 } : null));
+                    setData(prev => ({...prev,likes:true}))
+                }
+            }
+        })
+    }
     
     return (<div className='bg-dark-layer-1'>
     {/* TAB */}
@@ -43,7 +83,7 @@ const Description:React.FC<DescriptionProps> = ({problem}) => {
                         {solved && ( <BsCheck2Circle className="text-green-500" />)}
                         {!solved && ( <BsCheck2Circle className="text-gray-400" />)}
                     </div>
-                    <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6'>
+                    <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6' onClick={handleLike}>
                         {likes && (
                             <AiFillHeart className="text-red-600"/> 
                         )}
@@ -135,7 +175,7 @@ function useGetCurrentProblem(problemId:string){
         getCurrentProblem();
     },[problemId])
 
-    return {currentProblem,loading,problemDiff};
+    return {currentProblem,loading,problemDiff,setCurrentProblem};
 }
 
 function useGetUserDataForProblem(problemId:string) {
@@ -148,11 +188,13 @@ function useGetUserDataForProblem(problemId:string) {
             if (userSnap.exists()){
                 const Userdata = userSnap.data();
                 const {solvedProblems,likedP} = Userdata;
-    
+                console.log(Userdata)
+                
                 setData({
                     likes:likedP.includes(problemId),
                     solved:solvedProblems.includes(problemId),
                 })
+                console.log(likedP.includes(problemId))
             }else {
                 console.log("doesn't exist")
             }
