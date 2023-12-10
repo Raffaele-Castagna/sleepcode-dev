@@ -24,5 +24,5 @@ export type DBproblem = {
 	difficulty:string;
 	likes: number;
 	order: number;
-	videId?: string;
+	videoId?: string;
 }

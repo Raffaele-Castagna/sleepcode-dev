@@ -6,19 +6,34 @@ import {AiFillYoutube} from 'react-icons/ai'
 import { IoClose } from 'react-icons/io5'
 import YouTube from 'react-youtube';
 
-import { firestore } from '@/firebase/firebase';
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+import { auth, firestore } from '@/firebase/firebase';
+import { collection, doc, getDoc, getDocs, orderBy, query } from 'firebase/firestore';
 import { DBproblem } from '@/utils/problems/GenericProblem/genericProblem';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { authModalState } from '@/atoms/authModelAtom';
+import { setLazyProp } from 'next/dist/server/api-utils';
 type ProblemsTableProps = {
     setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const ProblemsTable:React.FC<ProblemsTableProps> = ({setLoadingProblems}) => {
+
+const [user] = useAuthState(auth);
+    
 const [youtubePlay,setYoutubePlay] = useState ( {
     isOpen: false,
     video: ""
 })
 const problems = useGetProblems(setLoadingProblems);
+const solvedProblems = useGetSolvedProblems();
+const likedProblems = useGetLikedProblems();
+
+console.log(solvedProblems)
+console.log(likedProblems)
+
+
+
+
 
 const closeYT = () => {
     setYoutubePlay({isOpen:false,video:""})
@@ -31,8 +46,8 @@ const closeYT = () => {
                 return (
                     <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
                         <th>
-                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> <BsCheckCircle fontsize={"18"} width="18"/>  </div>
-                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> <BsHeartFill fontsize={"18"} width="18"></BsHeartFill></div>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> {solvedProblems.includes(problem.id) &&<BsCheckCircle fontsize={"18"} width="18" /> }  </div>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> {likedProblems.includes(problem.id) && <BsHeartFill fontsize={"18"} width="18"/>}</div>
                         </th>
                         <td className="px-6 py-4">
                             <Link className="hover:text-blue-600 cursor-pointer" href={`/problems/${problem.id}`}>
@@ -103,3 +118,42 @@ function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<
     },[setLoadingProblems])
     return problems;
 }
+
+
+function useGetLikedProblems(){
+    const [likedproblems,setlikedproblems] = useState<string[]>([]);
+    const [user] = useAuthState(auth)
+    useEffect(() => {
+        const getLikedProblems = async () => {
+            const userRef = doc(firestore,"users",user!.uid)
+            const userDoc = await getDoc(userRef)
+            if (userDoc.exists()){
+                setlikedproblems(userDoc.data().likedP)
+            }
+        }
+        if (user) getLikedProblems();
+        if (!user) setlikedproblems([]);
+    }, [user])
+
+    return likedproblems
+}
+
+function useGetSolvedProblems(){
+    const [solvedProblems,setSolvedProblems] = useState<string[]>([]);
+    const [user] = useAuthState(auth)
+    useEffect(() => {
+        const getSolvedProblems = async () => {
+            const userRef = doc(firestore,"users",user!.uid)
+            const userDoc = await getDoc(userRef)
+            if (userDoc.exists()){
+                setSolvedProblems(userDoc.data().solvedProblems)
+            }
+        }
+        if (user) getSolvedProblems();
+        console.log("called")
+        if (!user) setSolvedProblems([]);
+    }, [user])
+
+    return solvedProblems
+}
+
