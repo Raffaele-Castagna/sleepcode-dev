@@ -1,7 +1,11 @@
+import { problems } from '@/Problems/Problems';
 import FilterOptions from '@/components/Filters/FilterOptions';
 import ProblemsTable from '@/components/ProblemTable/ProblemsTable';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
-import React, { useState } from 'react';
+import { auth, firestore } from '@/firebase/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 type catalogueProps = {
     
@@ -24,6 +28,8 @@ const catalogue:React.FC<catalogueProps> = () => {
     
    // eslint-disable-next-line react-hooks/rules-of-hooks
    const [loadingProblem,setLoadingProblems] = useState(false);
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const solvedProblems = useGetSolvedProblems();
    
     return (
         <>
@@ -67,11 +73,43 @@ const catalogue:React.FC<catalogueProps> = () => {
           </tr>
         </thead>
         )}
-        <ProblemsTable setLoadingProblems = {setLoadingProblems}/>
+        <ProblemsTable setLoadingProblems = {setLoadingProblems} solvedProblems={solvedProblems}/>
       </table>
-      </div></main>
+      </div>
+      <div className='flex justify-center items-center'>
+        {!loadingProblem && (
+          <div className= "max-w-sm p-6 bg-dark-layer-1 border-gray-200 rounded-lg shadow flex justify-center items-center">
+          <div className="font-bold w-40 h-40 text-white rounded-full bg-dark-fill-3 flex items-center justify-center font-mono text-5xl">{solvedProblems.length}/{problems.length}</div>
+    
+              </div> 
+          
+          
+
+        
+        )}
+        </div>
+      </main>
         </>
       );
 }
 export default catalogue;
+
+function useGetSolvedProblems(){
+  const [solvedProblems,setSolvedProblems] = useState<string[]>([]);
+  const [user] = useAuthState(auth)
+  useEffect(() => {
+      const getSolvedProblems = async () => {
+          const userRef = doc(firestore,"users",user!.uid)
+          const userDoc = await getDoc(userRef)
+          if (userDoc.exists()){
+              setSolvedProblems(userDoc.data().solvedProblems)
+          }
+      }
+      if (user) getSolvedProblems();
+      console.log("called")
+      if (!user) setSolvedProblems([]);
+  }, [user])
+
+  return solvedProblems
+}
 

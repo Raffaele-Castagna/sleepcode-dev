@@ -14,9 +14,10 @@ import { authModalState } from '@/atoms/authModelAtom';
 import { setLazyProp } from 'next/dist/server/api-utils';
 type ProblemsTableProps = {
     setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
+    solvedProblems: string[]
 };
 
-const ProblemsTable:React.FC<ProblemsTableProps> = ({setLoadingProblems}) => {
+const ProblemsTable:React.FC<ProblemsTableProps> = ({setLoadingProblems,solvedProblems}) => {
 
 const [user] = useAuthState(auth);
     
@@ -25,10 +26,10 @@ const [youtubePlay,setYoutubePlay] = useState ( {
     video: ""
 })
 const problems = useGetProblems(setLoadingProblems);
-const solvedProblems = useGetSolvedProblems();
+
 const likedProblems = useGetLikedProblems();
 
-console.log(solvedProblems)
+
 console.log(likedProblems)
 
 
@@ -138,22 +139,5 @@ function useGetLikedProblems(){
     return likedproblems
 }
 
-function useGetSolvedProblems(){
-    const [solvedProblems,setSolvedProblems] = useState<string[]>([]);
-    const [user] = useAuthState(auth)
-    useEffect(() => {
-        const getSolvedProblems = async () => {
-            const userRef = doc(firestore,"users",user!.uid)
-            const userDoc = await getDoc(userRef)
-            if (userDoc.exists()){
-                setSolvedProblems(userDoc.data().solvedProblems)
-            }
-        }
-        if (user) getSolvedProblems();
-        console.log("called")
-        if (!user) setSolvedProblems([]);
-    }, [user])
 
-    return solvedProblems
-}
 
