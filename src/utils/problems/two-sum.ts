@@ -66,7 +66,16 @@ const handlerTwoSum= (fn:any) => {
              outputText: "[0,1]",
          },
      ],
-     constraints: "",
+     constraints: `<li class='mt-2'>
+     <code>2 ≤ nums.length ≤ 10</code>
+   </li> <li class='mt-2'>
+   <code>-10 ≤ nums[i] ≤ 10</code>
+   </li> <li class='mt-2'>
+   <code>-10 ≤ target ≤ 10</code>
+   </li>
+   <li class='mt-2 text-sm'>
+   <strong>Esiste solo 1 risposta valida.</strong>
+   </li>`,
      order: 0,
      starterCode: starterCodeTwoSum,
      handlerFunction: handlerTwoSum,

@@ -7,14 +7,110 @@ import { javascript } from '@codemirror/lang-javascript';
 import Footer from '../Footer';
 import { Problem } from '@/utils/problems/GenericProblem/genericProblem';
 import test from 'node:test';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, firestore } from '@/firebase/firebase';
+import { pid } from 'node:process';
+import { useRouter } from 'next/router';
+import { problems } from '@/utils/problems';
+import { toast } from 'react-toastify';
+import { arrayUnion, doc, updateDoc } from 'firebase/firestore';
+
 
 type EditorProps = {
-    problem: Problem
+    problem: Problem;
+    setsolved: React.Dispatch<React.SetStateAction<boolean>>
 };
 
-const Editor:React.FC<EditorProps> = ({problem}) => {
+const Editor:React.FC<EditorProps> = ({problem,setsolved}) => {
    const [testcase,setTestCase] = useState<number>(0);
-    
+   const [user] = useAuthState(auth)
+   const {query : {pid} } = useRouter();
+   const handleSubmit = async () => {
+    try {
+        usercode = usercode.slice(usercode.indexOf(problem.starterFunctionName));
+		const cb = new Function(`return ${usercode}`)();
+		const handler = problems[pid as string].handlerFunction;
+        if (typeof handler === "function") {
+            const success = handler(cb);
+        if (success){
+            toast.success("Tutti i test case passati, bravo!",{position:'top-center', autoClose:3000 , theme: 'dark'})
+            if (user) {
+            const userRef = doc(firestore,"users",user!.uid)
+            await updateDoc(userRef,{solvedProblems:arrayUnion(pid)})
+            setsolved(true);
+            }
+
+        }else {
+            toast.error("Uno o più test case non sono passati, riprova!",{position:'top-center', autoClose:3000 , theme: 'dark'})
+        }
+    } 
+
+    }catch (error:any){
+        console.log(error.message);
+			if (
+				error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:")
+			) {
+				toast.error("Uno o più test case falliti!", {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+			} else {
+				toast.error(error.message, {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+	}
+
+   }
+}
+   //w/o db
+   const handleSubmitForRunning = async () => {
+    try {
+        usercode = usercode.slice(usercode.indexOf(problem.starterFunctionName));
+		const cb = new Function(`return ${usercode}`)();
+		const handler = problems[pid as string].handlerFunction;
+        if (typeof handler === "function") {
+            const success = handler(cb);
+        if (success){
+            toast.success("Tutti i test case passati, bravo!",{position:'top-center', autoClose:3000 , theme: 'dark'})
+
+        }else {
+            toast.error("Uno o più test case non sono passati, riprova!",{position:'top-center', autoClose:3000 , theme: 'dark'})
+        }
+    } 
+
+    }catch (error:any){
+        console.log(error.message);
+			if (
+				error.message.startsWith("AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:")
+			) {
+				toast.error("Uno o più test case falliti!", {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+			} else {
+				toast.error(error.message, {
+					position: "top-center",
+					autoClose: 3000,
+					theme: "dark",
+				});
+	}
+
+   }
+
+   }
+
+
+   let [usercode,setusercode] = useState<string>(problem.starterCode);
+   const onChange = (value: string) => {
+    setusercode(value);
+   }
+
+   
+
     return (
         <div className="flex flex-col bg-dark-layer-1 relative overflow-x-hidden">
 
@@ -25,6 +121,7 @@ const Editor:React.FC<EditorProps> = ({problem}) => {
                             <CodeMirror 
                             value={problem.starterCode}
                             theme={vscodeDark}
+                            onChange={onChange}
                             extensions={[javascript()]}
                             style={{fontSize:16}} />
                         </div>
@@ -77,7 +174,7 @@ const Editor:React.FC<EditorProps> = ({problem}) => {
                             </div>
                             
                 </Split>
-                <Footer />
+                <Footer handleSubmit={handleSubmit} handleSubmitForRunning={handleSubmitForRunning}/>
                 
     </div>
     )

@@ -14,9 +14,12 @@ import { toast } from 'react-toastify';
 
 type DescriptionProps = {
     problem: Problem;
+    //local solved
+    _solved: boolean;
+
 };
 
-const Description:React.FC<DescriptionProps> = ({problem}) => {
+const Description:React.FC<DescriptionProps> = ({problem,_solved}) => {
     const [user] = useAuthState(auth);
     const {currentProblem,loading,problemDiff,setCurrentProblem} = useGetCurrentProblem(problem.id);
     const {likes,solved,setData} = useGetUserDataForProblem(problem.id);
@@ -80,8 +83,8 @@ const Description:React.FC<DescriptionProps> = ({problem}) => {
                         {currentProblem.difficulty}
                     </div>
                     <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200'>
-                        {solved && ( <BsCheck2Circle className="text-green-500" />)}
-                        {!solved && ( <BsCheck2Circle className="text-gray-400" />)}
+                        {solved || _solved && ( <BsCheck2Circle className="text-green-500" />)}
+                        {!solved && !_solved && ( <BsCheck2Circle className="text-gray-400" />)}
                     </div>
                     <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6' onClick={handleLike}>
                         {likes && (

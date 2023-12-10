@@ -26,6 +26,7 @@ export const search2DMatrixHandler = (fn: any) => {
 		const answers = [true, false];
 		for (let i = 0; i < tests.length; i++) {
 			const result = fn(tests[i].matrix, tests[i].target);
+			console.log(result, " = ", answers[i])
 			assert.deepEqual(result, answers[i]);
 		}
 		return true;
