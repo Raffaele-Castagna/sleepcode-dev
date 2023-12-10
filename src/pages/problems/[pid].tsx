@@ -1,5 +1,6 @@
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
 import Workspace from '@/components/Workspace/Workspace';
+import useHasMounted from '@/hooks/useHasMounted';
 import { problems } from '@/utils/problems';
 import { Problem } from '@/utils/problems/GenericProblem/genericProblem';
 import React from 'react';
@@ -9,7 +10,8 @@ type ProblemPageProps = {
 };
 
 const ProblemPage:React.FC<ProblemPageProps> = ({problem}) => {
-    console.log(problem)
+    const hasMounted= useHasMounted();
+    if (!hasMounted) return null;
     return <div><TopNavBar problemPage={true}/>
     <Workspace problem={problem}></Workspace>
     

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Selector from './Selector/Selector';
 import Split from 'react-split'
 import CodeMirror from "@uiw/react-codemirror"
@@ -103,10 +103,19 @@ const Editor:React.FC<EditorProps> = ({problem,setsolved}) => {
 
    }
 
+   useEffect(() => {
+        const code = localStorage.getItem(`code-${pid}`)
+        if (user){
+            setusercode(code ? JSON.parse(code) : problem.starterCode);
+        }else {
+            setusercode(problem.starterCode)
+        }
+   },[])
 
    let [usercode,setusercode] = useState<string>(problem.starterCode);
    const onChange = (value: string) => {
     setusercode(value);
+    localStorage.setItem(`code-${pid}`, JSON.stringify(value));
    }
 
    
@@ -119,7 +128,7 @@ const Editor:React.FC<EditorProps> = ({problem,setsolved}) => {
                 <Split className="h-[calc(100vh-94px)] " direction="vertical" sizes={[60,40]} minSize={40}>
                         <div className="w-full overflow-auto">
                             <CodeMirror 
-                            value={problem.starterCode}
+                            value={usercode}
                             theme={vscodeDark}
                             onChange={onChange}
                             extensions={[javascript()]}
