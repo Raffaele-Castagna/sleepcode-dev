@@ -30,6 +30,9 @@ const catalogue:React.FC<catalogueProps> = () => {
    const [loadingProblem,setLoadingProblems] = useState(false);
    // eslint-disable-next-line react-hooks/rules-of-hooks
    const solvedProblems = useGetSolvedProblems();
+
+   // eslint-disable-next-line react-hooks/rules-of-hooks
+   const [user] = useAuthState(auth);
    
     return (
         <>
@@ -77,9 +80,12 @@ const catalogue:React.FC<catalogueProps> = () => {
       </table>
       </div>
       <div className='flex justify-center items-center'>
-        {!loadingProblem && (
-          <div className= "max-w-sm p-6 bg-dark-layer-1 border-gray-200 rounded-lg shadow flex justify-center items-center">
-          <div className="font-bold w-40 h-40 text-white rounded-full bg-dark-fill-3 flex items-center justify-center font-mono text-5xl">{solvedProblems.length}/{problems.length}</div>
+        {!loadingProblem && user && (
+          <div className= "max-w-full p-6 bg-dark-layer-1 border-white rounded-xl flex justify-center items-center">
+          <div className="font-bold w-40 h-40 text-white rounded-full bg-dark-fill-3 flex items-center justify-center font-mono text-5xl mx-10">{solvedProblems.length}/{problems.length}</div>
+          <div className="flex-1 " > <p className='text-white font-bold'>Problemi Risolti</p>
+          <p className='text-white'></p>
+          </div>
     
               </div> 
           

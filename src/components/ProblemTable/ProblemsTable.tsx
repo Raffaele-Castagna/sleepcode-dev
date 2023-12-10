@@ -30,7 +30,6 @@ const problems = useGetProblems(setLoadingProblems);
 const likedProblems = useGetLikedProblems();
 
 
-console.log(likedProblems)
 
 
 

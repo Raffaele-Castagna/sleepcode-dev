@@ -2,7 +2,7 @@ import { authModalState } from '@/atoms/authModelAtom';
 import { auth } from '@/firebase/firebase';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 
@@ -12,16 +12,13 @@ type LoginProps = {
 
 const Login:React.FC<LoginProps> = () => {
     const setAuthModalState = useSetRecoilState(authModalState)
+    const [signInWithGoogle, Googleuser, Googleloading, Googleerror] = useSignInWithGoogle(auth);
     const handleClick = (type:"login" | "register" | "forgotPassword") => {
         setAuthModalState((prev) => ({ ...prev, type}))
     };
     const [inputs,setInputs] = useState({email:"",password:""});
     const [
-        signInWithEmailAndPassword,
-        user,
-        loading,
-        error,
-      ] = useSignInWithEmailAndPassword(auth);
+        signInWithEmailAndPassword, user, loading, error ] = useSignInWithEmailAndPassword(auth);
 
       const handleInputChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -67,6 +64,7 @@ const Login:React.FC<LoginProps> = () => {
 
         <button type="submit" className="w-full text-white focus:ring-blue-300 font-medium rounder-lg text-sm px5 py-2.5 text-center bg-brand-orange hover:bg-brand-orange-s rounded">
             {loading ? "Logging..."  : "Login"}</button>
+        
         
         <button className="flex w-ful justify-end" onClick={() => handleClick("forgotPassword")}>
             <a href="#" className="text-sm block text-brand-orange hover:underline w-full text-right">

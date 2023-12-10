@@ -1,6 +1,6 @@
-import { auth } from '@/firebase/firebase';
+import { auth, firestore } from '@/firebase/firebase';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import LogoutLogic from '../LogicaBottoni/LogoutLogic';
 import { useSetRecoilState } from 'recoil';
@@ -9,6 +9,7 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { BsList } from 'react-icons/bs';
 import Timer from '../Timer.tsx/Timer';
 import { useRouter } from 'next/router';
+import { doc, getDoc } from 'firebase/firestore';
 
 
 
@@ -17,6 +18,9 @@ type TopNavBarProps = {
 };
 
 const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
+    const userRole = useGetUseRole();
+    console.log(userRole);
+    
     const router = useRouter();
     const [user] = useAuthState(auth)
     const setAuthModalState = useSetRecoilState(authModalState)
@@ -27,7 +31,11 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
         <img className='h-[22px] flex-1' src='/new_logo.svg' alt='Logo' />
         <Link href='/auth' className='h-[22px] flex-1'>Home </Link>
         <Link href='/catalogue' className='h-[22px] flex-1'>Catalogo</Link>
+        {user && userRole && (
+
+        
         <Link href="/AdminPanel" className='h-[22px] flex'>Admin Panel</Link>
+        )}
         </div>
     
         
@@ -61,3 +69,26 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
 </nav> )
 }
 export default TopNavBar;
+
+function useGetUseRole(){
+    const [userRole,setUserRole] = useState<boolean>()
+    const [user] = useAuthState(auth)
+    useEffect(() => {
+        const getUserRole = async () => {
+            const userRef = doc(firestore,"users",user!.uid)
+            const userDoc = await getDoc(userRef)
+            if (userDoc.exists()){
+                if (userDoc.data().role !== "Admin"){
+                    setUserRole(false)
+                }else {
+                    setUserRole(true);
+                }
+                
+            }
+        }
+        if (user) getUserRole();
+        if (!user) setUserRole(false);
+    }, [user])
+  
+    return userRole;
+  }
