@@ -1,5 +1,6 @@
 import { problems } from '@/Problems/Problems';
 import FilterOptions from '@/components/Filters/FilterOptions';
+import CircleSkeleton from '@/components/LoadingSkeletons/CircleSkeleton';
 import ProblemsTable from '@/components/ProblemTable/ProblemsTable';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
 import { auth, firestore } from '@/firebase/firebase';
@@ -46,7 +47,7 @@ const catalogue:React.FC<catalogueProps> = () => {
         {loadingProblem && (
           <div className='max-w-[1200px] mx-auto sm:w-7/12 w-full animate-pulse'>
               {
-                <><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /></>
+                <><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /><LoadingSkeleton /></>
               }
 
           </div>
