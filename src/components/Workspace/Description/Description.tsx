@@ -83,8 +83,8 @@ const Description:React.FC<DescriptionProps> = ({problem,_solved}) => {
                         {currentProblem.difficulty}
                     </div>
                     <div className='rounded p-[3px] ml-4 text-lg transition-colors duration-200'>
-                        {solved || _solved && ( <BsCheck2Circle className="text-green-500" />)}
-                        {!solved && !_solved && ( <BsCheck2Circle className="text-gray-400" />)}
+                        {solved && ( <BsCheck2Circle className="text-green-500" />)}
+                        {!solved && ( <BsCheck2Circle className="text-gray-400" />)}
                     </div>
                     <div className='flex items-center cursor-pointer hover:bg-dark-fill-3 space-x-1 rounded p-[3px]  ml-4 text-lg transition-colors duration-200 text-dark-gray-6' onClick={handleLike}>
                         {likes && (
@@ -106,7 +106,7 @@ const Description:React.FC<DescriptionProps> = ({problem,_solved}) => {
                     </div>
 
                 )}
-                {/* Problem Statement(paragraphs) */}
+                {/* Problem Statement */}
                 <div className='text-white text-sm'>
                     <div dangerouslySetInnerHTML={{__html: problem.problemStatement}}>
                         

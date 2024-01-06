@@ -11,7 +11,6 @@ const PwReset:React.FC<PwResetProps> = () => {
     const [email, setEmail] = useState('');
     const [sendPasswordResetEmail, sending, error] = useSendPasswordResetEmail(auth)
     const handleReset = async (e:React.FormEvent<HTMLFormElement>) => {
-        console.log(email);
         e.preventDefault();
         const success = await sendPasswordResetEmail(
             email

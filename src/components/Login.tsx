@@ -12,7 +12,6 @@ type LoginProps = {
 
 const Login:React.FC<LoginProps> = () => {
     const setAuthModalState = useSetRecoilState(authModalState)
-    const [signInWithGoogle, Googleuser, Googleloading, Googleerror] = useSignInWithGoogle(auth);
     const handleClick = (type:"login" | "register" | "forgotPassword") => {
         setAuthModalState((prev) => ({ ...prev, type}))
     };
@@ -27,19 +26,18 @@ const Login:React.FC<LoginProps> = () => {
     // async per roba che deve aspettare api o db calls
       const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!inputs.email || !inputs.password) return alert("Inserisci sia email che password!");
+        if (!inputs.email || !inputs.password) return toast.error("Inserisci sia email che password!",{position:"top-center",toastId:"loading",theme:"dark"});
         try {
             const newUser = await signInWithEmailAndPassword(inputs.email,inputs.password);
             if (!newUser) return;
             router.push("/")
          } catch(error:any){
-            alert(error.message)
             toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
             }
         }
         useEffect(() => {
             if (error) toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
-        })
+        },[error])
 
     
     

@@ -39,8 +39,6 @@ const catalogue:React.FC<catalogueProps> = () => {
         
           <main className='bg-dark-layer-2 min-h-screen'>
             <TopNavBar problemPage={false}/>
-            <h1 className='text-2xl text-center text-white dark:text-white font-medium uppercase mt-10 mb-5'> DAJE ROMA 
-      </h1>
 
       <div className='justify-center flex items-center '><FilterOptions /></div>
     

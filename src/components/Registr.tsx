@@ -50,6 +50,7 @@ const Registr:React.FC<RegistrProps> = () => {
                 role: "User"
             }
             await setDoc(doc(firestore,"users",newUser.user.uid),userData)
+            toast.success("Account creato con successo!",{position:"top-center",toastId:"success",theme:"dark"})
             router.push('/')
         }catch (error:any){
             toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark"});
