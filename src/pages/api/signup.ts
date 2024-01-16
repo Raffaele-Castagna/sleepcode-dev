@@ -54,7 +54,7 @@ async function signupHandler(req: NextApiRequest, res:NextApiResponse){
             await setDoc(doc(firestore,"users",newUser.user.uid),userData)
             return res.status(200).send({success:true});
     }catch (error) {
-        return res.status(501).send((error as Error).message);
+        return res.status(500).send((error as Error).message);
     
     }
 

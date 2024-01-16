@@ -19,8 +19,6 @@ type TopNavBarProps = {
 
 const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
     const userRole = useGetUseRole();
-    console.log(userRole);
-    
     const router = useRouter();
     const [user] = useAuthState(auth)
     const setAuthModalState = useSetRecoilState(authModalState)

@@ -2,7 +2,7 @@ import AuthModel from '@/components/AuthModel';
 import Login from '@/components/Login';
 import React, { useEffect, useState } from 'react';
 import { authModalState } from '@/atoms/authModelAtom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { auth } from '@/firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
@@ -12,6 +12,7 @@ type AuthPageProps = {
 };
 
 const AuthPage:React.FC<AuthPageProps> = () => {
+    const setAuthModalState = useSetRecoilState(authModalState)
     const AuthModal = useRecoilValue(authModalState);
     const [user,loading,error] = useAuthState(auth);
     const [pageLoading,setPageLoading] = useState(true);

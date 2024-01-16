@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 type LoginProps = {
     
@@ -12,6 +12,7 @@ type LoginProps = {
 
 const Login:React.FC<LoginProps> = () => {
     const setAuthModalState = useSetRecoilState(authModalState)
+    const AuthModal = useRecoilValue(authModalState);
     const handleClick = (type:"login" | "register" | "forgotPassword") => {
         setAuthModalState((prev) => ({ ...prev, type}))
     };
@@ -30,6 +31,7 @@ const Login:React.FC<LoginProps> = () => {
         try {
             const newUser = await signInWithEmailAndPassword(inputs.email,inputs.password);
             if (!newUser) return;
+            console.log(user);
             router.push("/")
          } catch(error:any){
             toast.error(error.message, { position: "top-center", autoClose:3000, theme:"dark"});
