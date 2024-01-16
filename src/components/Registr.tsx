@@ -37,7 +37,27 @@ const Registr:React.FC<RegistrProps> = () => {
             toast.loading("Sto creando il tuo account",{position:"top-center",toastId:"loading",theme:"dark"})
             if (inputs.password != inputs.confirmpassword) { (alert("Password diverse"))
                                                              return;}
-            const newUser = await createUserWithEmailAndPassword(inputs.email,inputs.password);
+            const reqValue = {email: inputs.email,
+                              username: inputs.displayName,
+                              password: inputs.password
+                            }
+            
+            const res = await fetch("/api/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body : JSON.stringify(reqValue),
+            })
+            if (res.status === 200) {
+                toast.success("Account creato con successo!",{position:"top-center",toastId:"success",theme:"dark"})
+                router.push('/')
+                handleClick("login");
+            }else {
+                throw new Error(await res.text())
+            }
+            
+
+            // fatto con hook
+          /*  const newUser = await createUserWithEmailAndPassword(inputs.email,inputs.password);
             if (!newUser) return;
             const userData = {
                 uid: newUser.user.uid,
@@ -51,9 +71,12 @@ const Registr:React.FC<RegistrProps> = () => {
             }
             await setDoc(doc(firestore,"users",newUser.user.uid),userData)
             toast.success("Account creato con successo!",{position:"top-center",toastId:"success",theme:"dark"})
-            router.push('/')
+            router.push('/')*/
+
+
         }catch (error:any){
-            toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark"});
+            if (error.message === "Email già in utilizzo") { toast.error("Email già in utilizzo", { position: "top-center", autoClose:3000,  theme:"dark"});} else {
+            toast.error(error.message, { position: "top-center", autoClose:3000,  theme:"dark"}); }
         }finally {
             toast.dismiss("loading")
         }
