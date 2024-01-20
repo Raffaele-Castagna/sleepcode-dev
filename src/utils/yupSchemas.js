@@ -17,7 +17,7 @@ const emailSchema = Yup.string()
   .minLowercase(1, "Password deve contenere almeno 1 lettera minuscola")
   .minUppercase(1, "Password deve contenere almeno 1 lettera maiuscola")
   .minSymbols(1, "Password deve contenere almeno 1 simbolo speciale")
-  .minNumbers(1, "Password must contain at least 1 number letter");
+  .minNumbers(1, "Password must contain at least 1 number");
 
 
   export const loginSchema = {

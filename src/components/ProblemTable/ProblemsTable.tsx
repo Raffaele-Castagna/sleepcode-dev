@@ -46,8 +46,8 @@ const closeYT = () => {
                 return (
                     <tr className={`${idx % 2 == 1 ? "bg-dark-layer-1" : ""}`} key={problem.id}>
                         <th>
-                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> {solvedProblems.includes(problem.id) &&<BsCheckCircle fontsize={"18"} width="18" /> }  </div>
-                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> {likedProblems.includes(problem.id) && <BsHeartFill fontsize={"18"} width="18"/>}</div>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-green-s'> {solvedProblems.includes(problem.id) &&<BsCheckCircle fontSize={"15"} width="18" /> }  </div>
+                            <div className='px-2 py-2 font-medium whitespace-nowrap text-dark-pink'> {likedProblems.includes(problem.id) && <BsHeartFill fontSize={"15"} width="18"/>}</div>
                         </th>
                         <td className="px-6 py-4">
                             <Link className="hover:text-blue-600 cursor-pointer" href={`/problems/${problem.id}`}>
@@ -62,7 +62,7 @@ const closeYT = () => {
                         </td>
                         <td className={`px-6 py-4`}>
                             {problem.videoId ? (
-                                <AiFillYoutube fontsize={"18"} className="cursor-pointer hover:text-red-500" onClick = { () => setYoutubePlay({isOpen:true, video: problem.videoId as string}) } />
+                                <AiFillYoutube fontSize={"18"} className="cursor-pointer hover:text-red-500" onClick = { () => setYoutubePlay({isOpen:true, video: problem.videoId as string}) } />
                             ) : ( <p className='text-gray-400'>N/A</p>)
 
                             }
@@ -102,14 +102,15 @@ function useGetProblems(setLoadingProblems: React.Dispatch<React.SetStateAction<
     useEffect(() => {
         const getProblems = async () => {
             setLoadingProblems(true);
-            const q = query(collection(firestore,"problems"),orderBy("order","asc"))
-            const querySnapshot = await getDocs(q);
-            console.log(querySnapshot)
-            const tmp: DBproblem[] = [];
-            querySnapshot.forEach((doc) => {
-                tmp.push({id:doc.id,...doc.data()} as DBproblem)
-            })
-            setProblems(tmp);
+            const res = await fetch("/api/getproblems",{
+                method:"GET",
+                headers: { "Content-Type": "application/json" }
+            }).then((res) => res.json()).then
+                ((problems) => {
+                    setProblems(problems)
+                })
+            
+           // setProblems(tmp);
             setLoadingProblems(false);
             
         }

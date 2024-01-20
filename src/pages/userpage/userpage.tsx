@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { authModalState } from '@/atoms/authModelAtom';
 import DeleteProgress from '@/components/DeleteAccount/DeleteAccount';
-import ModifyEmail from '@/components/ModifyEmail';
 import ModifyPw from '@/components/ModifyPw';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';

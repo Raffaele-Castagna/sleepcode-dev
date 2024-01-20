@@ -111,7 +111,6 @@ function useGetSolvedProblems(){
           }
       }
       if (user) getSolvedProblems();
-      console.log("called")
       if (!user) setSolvedProblems([]);
   }, [user])
 

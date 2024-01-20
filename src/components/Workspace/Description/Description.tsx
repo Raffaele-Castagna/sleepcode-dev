@@ -30,7 +30,7 @@ const Description:React.FC<DescriptionProps> = ({problem,_solved}) => {
 
         return;
         }
-        //transaction for atomicity
+        //transaction per likes in real time
         await runTransaction(firestore,async(transaction) => {
             const userRef = doc(firestore,"users",user.uid)
             const problemRef = doc(firestore,"problems",problem.id)
@@ -186,6 +186,7 @@ function useGetUserDataForProblem(problemId:string) {
     const [user] = useAuthState(auth);
     useEffect(() =>{
         const getGetUserDataForProblem = async () => {
+            // ! forzato
             const userRef = doc(firestore,"users",user!.uid)
             const userSnap = await getDoc(userRef)
             if (userSnap.exists()){
