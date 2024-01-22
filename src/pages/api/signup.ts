@@ -30,9 +30,15 @@ async function signupHandler(req: NextApiRequest, res:NextApiResponse){
         username: regSchema.username,
         password: regSchema.password,
     });
-
     try {
         await schema.validate(req.body);
+
+    }catch(error){
+        return res.status(400).send((error as Error))
+    }
+
+    try {
+        
         const {email , username , password} = req.body;
         const newUser = await createUserWithEmailAndPassword(auth,email,password).catch((error) => {
             return res.status(409).send("Email già in utilizzo")

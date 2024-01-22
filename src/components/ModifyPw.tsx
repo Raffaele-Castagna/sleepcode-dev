@@ -1,6 +1,6 @@
 import { auth } from '@/firebase/firebase';
 import React, { useEffect, useState } from 'react';
-import { useUpdatePassword } from 'react-firebase-hooks/auth';
+import { useAuthState, useUpdatePassword } from 'react-firebase-hooks/auth';
 import { toast } from 'react-toastify';
 
 type ModifyPwProps = {
@@ -10,6 +10,7 @@ type ModifyPwProps = {
 const ModifyPw:React.FC<ModifyPwProps> = () => {
     const [inputs,setInputs] = useState({password:"",confirmpassword:""})
     const [updatePassword, updating, error] = useUpdatePassword(auth);
+    const [user] = useAuthState(auth)
     
     const handleChangeInput = (e:React.ChangeEvent<HTMLInputElement>) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value}));
@@ -22,13 +23,19 @@ const ModifyPw:React.FC<ModifyPwProps> = () => {
             toast.loading("Sto cambiando la tua password",{position:"top-center",toastId:"loading",theme:"dark"})
             if (inputs.password != inputs.confirmpassword) { toast.error("Password diverse!",{position:"top-center",toastId:"failure",theme:"dark"})
                                                              return;}
-            const success = await updatePassword(inputs.password)
-            console.log(success);
-            if (success) {
+            const reqvalue = {uid : user?.uid, password : inputs.password}
+            const res = await fetch("/api/changepassword", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body : JSON.stringify(reqvalue)
+            })
+            if (res.status === 200) {
                 toast.success("Password Modificata!",{position:"top-center",toastId:"success",theme:"dark"})
+            }else {
+                throw new Error(await res.text())
             }
         }catch (error:any){
-            toast.error("Impossibile Registrarti,controlla e riprova", { position: "top-center", autoClose:3000,  theme:"dark"});
+            toast.error(error.message, { position: "top-center", autoClose:3000,  theme:"dark"});
         }finally {
             toast.dismiss("loading")
         }

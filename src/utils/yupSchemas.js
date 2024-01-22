@@ -6,6 +6,9 @@ const emailSchema = Yup.string()
   .required("Email richiesta!")
   .email("Email invalida");
 
+  const idSchema = Yup.string()
+  .required("Uid needed");
+
   const usrRegSchema = Yup.string()
   .required("Username richiesto!")
 
@@ -30,3 +33,8 @@ const emailSchema = Yup.string()
     username: usrRegSchema,
     password: pwdSchema,
   };
+
+  export const uSchema = {
+    uid : idSchema
+  }
+

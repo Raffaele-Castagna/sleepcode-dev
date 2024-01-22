@@ -43,11 +43,6 @@ const DeleteProgress:React.FC<DeleteProgressProps> = () => {
                 body : JSON.stringify(user.uid)
             })
             if (res.status === 200) {
-                // DEVE ESSERE FATTO CON LA SESSIONE CORRENTE PER LIMITAZIONE DI FIREBASE (DOVREI PAGARE
-                // PER IL PIANO BLAZE PER OTTENERE IL PLUGIN CHE NON HA BISOGNO DELLA SESSIONE CLIENT)
-                await auth.currentUser?.delete().catch((error) =>  {
-                    toast.error("Non eliminato l'account proprio",{position:"top-center",toastId:"success",theme:"dark"})
-                });
                 toast.success("Account eliminato!",{position:"top-center",toastId:"success",theme:"dark"})
                 setAuthModal((prev) => ({ ...prev,isOpen : false}))
                 signOut();

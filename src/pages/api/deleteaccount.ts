@@ -9,6 +9,7 @@ import { authModalState } from "@/atoms/authModelAtom";
 import { Auth, createUserWithEmailAndPassword, getAuth, initializeAuth, onAuthStateChanged } from "firebase/auth";
 import { error } from "console";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { adminAuth } from "@/firebase/firebase-admin-config";
 
 
 
@@ -29,6 +30,7 @@ async function deletehandler(req: NextApiRequest, res:NextApiResponse){
     }
 
     try {   
+            adminAuth.deleteUser(uid)
             const userRef = doc(firestore,"users",uid)
             await deleteDoc(userRef).catch((error) => {
                 return res.status(204).send("Già eliminato")
