@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { problems } from '@/Problems/Problems';
 import FilterOptions from '@/components/Filters/FilterOptions';
 import CircleSkeleton from '@/components/LoadingSkeletons/CircleSkeleton';
 import ProblemsTable from '@/components/ProblemTable/ProblemsTable';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
-import { auth, firestore } from '@/firebase/firebase';
+import { app, auth, firestore } from '@/firebase/firebase';
+import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -27,21 +30,28 @@ const LoadingSkeleton = () => {
 };
 const catalogue:React.FC<catalogueProps> = () => {
     
-   // eslint-disable-next-line react-hooks/rules-of-hooks
    const [loadingProblem,setLoadingProblems] = useState(false);
-   // eslint-disable-next-line react-hooks/rules-of-hooks
    const solvedProblems = useGetSolvedProblems();
+   const router = useRouter();
+   const [logged,setLogged] = useState(false)
+   const [pageLoading,setPageLoading] = useState(true)
+   const [user,loading,error] = useAuthState(auth);
 
-   // eslint-disable-next-line react-hooks/rules-of-hooks
-   const [user] = useAuthState(auth);
+   useEffect(() => {
+    if (user) setPageLoading(false);
+   },[])
+   auth.onAuthStateChanged(() => {
+    if (pageLoading){
+    setPageLoading(false)
+    }
+   })
    
+if (pageLoading) return null;
     return (
         <>
         
           <main className='bg-dark-layer-2 min-h-screen'>
             <TopNavBar problemPage={false}/>
-
-      <div className='justify-center flex items-center '><FilterOptions /></div>
     
       <div className='relative overflow-x-auto mx-auto px-6 pb-10'>
         {loadingProblem && (

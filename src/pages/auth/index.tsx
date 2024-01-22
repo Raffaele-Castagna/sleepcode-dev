@@ -7,6 +7,7 @@ import { auth } from '@/firebase/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/router';
 import TopNavBar from '@/components/TopNavBar/TopNavBar';
+import useHasMounted from '@/hooks/useHasMounted';
 type AuthPageProps = {
     
 };
@@ -17,13 +18,15 @@ const AuthPage:React.FC<AuthPageProps> = () => {
     const [user,loading,error] = useAuthState(auth);
     const [pageLoading,setPageLoading] = useState(true);
     const router = useRouter();
+    const hasMounted = useHasMounted();
+
+    if(!hasMounted) return null;
 
     /* <div className="flex items-center justify-center pointer-events-none select-none bg-cover bg-center object relative blur-sm">
     <img src="/totti.jpg" alt="Capitano img" className="w-full h-full object-cover absolute"/>
     </div>*/
         
-    useEffect(() => {
-    })
+    
     return <div className="bg-dark-layer-2 h-screen grid">
     <TopNavBar problemPage={false} />
     <div className="relative pt-16 pb-32 h-[calc(100vh-5rem)] flex content-center items-center justify-center"

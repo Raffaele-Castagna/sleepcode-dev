@@ -1,4 +1,4 @@
-import { auth, firestore } from '@/firebase/firebase';
+import { app, auth, firestore } from '@/firebase/firebase';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -10,6 +10,7 @@ import { BsList } from 'react-icons/bs';
 import Timer from '../Timer.tsx/Timer';
 import { useRouter } from 'next/router';
 import { doc, getDoc } from 'firebase/firestore';
+import { User, getAuth } from 'firebase/auth';
 
 
 
@@ -17,11 +18,24 @@ type TopNavBarProps = {
     problemPage:boolean
 };
 
+
 const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
     const userRole = useGetUseRole();
     const router = useRouter();
-    const [user] = useAuthState(auth)
     const setAuthModalState = useSetRecoilState(authModalState)
+   const [pageLoading,setPageLoading] = useState(true)
+   const [user,loading,error] = useAuthState(auth);
+   useEffect(() => {
+    if (user) setPageLoading(false);
+   },[])
+   auth.onAuthStateChanged(() => {
+    if (pageLoading){
+    setPageLoading(false)
+    }
+   })
+if (pageLoading) return null;
+
+
     return (
     <nav className='relative flex h-[50px] w-full shrink-0 items-center px-5 bg-dark-layer-1 text-dark-gray-7'>
     <div className={`flex w-full items-center justify-between `}>
@@ -52,7 +66,7 @@ const TopNavBar:React.FC<TopNavBarProps> = ({problemPage}) => {
                 <div className="cursor-pointer group relative">
                     <img src="/avatar.png" alt="user profile img" className="h-8 w-8 rounded-full" onClick={() => router.push("/userpage")}></img>
                     <div className="absolute top-10 left-2/4 -translate-x-2/4 mx-auto bg-dark-layer-1 text-brand-orange p-2 rounded shadow-lg z-40 group-hover:scale-100 scale-0 transition-all duration 300 ease-in-out"> 
-                    <p className="text-sm"> {user.email}</p></div>
+                    <p className="text-sm"> {user?.email}</p></div>
 
 
                 </div>
@@ -90,3 +104,4 @@ function useGetUseRole(){
   
     return userRole;
   }
+

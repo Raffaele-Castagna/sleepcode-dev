@@ -59,7 +59,6 @@ const DeleteProgress:React.FC<DeleteProgressProps> = () => {
             toast.dismiss("loading")
         }
     }
-
         
 
 
@@ -67,11 +66,11 @@ const DeleteProgress:React.FC<DeleteProgressProps> = () => {
     
     return  (
         <main>
-        <p className='text-4xl text-center text-white dark:text-white font-medium uppercase mt-10 mb-5'> Elimina Account   </p>
+        <div className='text-4xl text-center text-white dark:text-white font-medium uppercase mt-10 mb-5'> Elimina Account   </div>
         <form className="space-y-6 px-6 pb-4" onSubmit={handleDelete}>
         <div>
         <label htmlFor='password' className="text-sm font-medium block mb-2 text-gray-300">
-        Scrivi "CONFERMA" per eliminare i tuoi progressi
+        Scrivi CONFERMA per eliminare i tuoi progressi
         </label>
         <input onChange={handleChangeInput} type="confirm" name="conferma" id="Uconfirm"  className="border-2 rounded outline-none sm:text-sm rounder-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
         bg-gray-600 border-gray-500 placeholder-gray-400 text-white"/>
