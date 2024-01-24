@@ -10,7 +10,8 @@ const firebaseAdminConfig = {
     })
 }
 
-const adminApp = getApps.length < 0 ? initializeApp(firebaseAdminConfig,"admin") : getApp();
+
+const adminApp = !getApps.name.length  ? initializeApp(firebaseAdminConfig,"[admin]") : getApp("[admin]")
 
 const adminAuth = getAuth(adminApp);
 const adminFirestore = getFirestore(adminApp);

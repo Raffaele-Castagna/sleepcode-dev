@@ -32,7 +32,7 @@ async function changepwhandler(req: NextApiRequest, res:NextApiResponse){
     try {
         await schema.validate(req.body);
     }catch(error){
-        return res.status(400).send((error as Error).message)
+        return res.status(400).send("Errore!")
     }
 
     try {
@@ -45,7 +45,7 @@ async function changepwhandler(req: NextApiRequest, res:NextApiResponse){
         adminAuth.updateUser(uid,{
             password: password
         }).catch((error:any) => {
-            return res.status(500).send(error.message);
+            return res.status(500).send("Errore del server, riprova");
         })
             return res.status(200).send({success:true});
     }catch (error) {

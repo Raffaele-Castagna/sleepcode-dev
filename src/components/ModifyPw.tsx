@@ -29,7 +29,7 @@ const ModifyPw: React.FC<ModifyPwProps> = () => {
         });
         return;
       }
-      const reqvalue = { uid: user?.uid, password: inputs.password };
+      const reqvalue = { uid: user!.uid, password: inputs.password };
       const res = await fetch("/api/changepassword", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -44,12 +44,13 @@ const ModifyPw: React.FC<ModifyPwProps> = () => {
       } else {
         throw new Error(await res.text());
       }
-    } catch (error: any) {
-      toast.error(error.message, {
+    } catch (error) {
+      toast.error((error as Error).message, {
         position: "top-center",
         autoClose: 3000,
         theme: "dark",
       });
+      console.log((error as Error).message)
     } finally {
       toast.dismiss("loading");
     }
