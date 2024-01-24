@@ -20,6 +20,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+initializeApp(firebaseConfig)
 const app = !getApps.name.length ? initializeApp(firebaseConfig,"[DEFAULT]") : getApp("[DEFAULT]");
 
 const auth = getAuth(app);

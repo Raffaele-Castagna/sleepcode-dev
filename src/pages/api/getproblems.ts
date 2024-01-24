@@ -10,6 +10,23 @@ import {
 } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
 
+/**
+ * @swagger
+ * /api/getproblems:
+ *   get:
+ *     summary: Gets all the currently available problems
+ *     description: Gets all the currently available problems
+ *     tags:
+ *     - problems
+ *     responses:
+ *       200:
+ *         description: Operation completed successfully
+ *       405:
+ *         description: Method not allowed
+ *       500:
+ *         description: Something went wrong, please try again
+ */
+
 type Data = {
   success: boolean;
   error?: string;

@@ -31,7 +31,7 @@ const ModifyPw: React.FC<ModifyPwProps> = () => {
       }
       const reqvalue = { uid: user!.uid, password: inputs.password };
       const res = await fetch("/api/changepassword", {
-        method: "POST",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reqvalue),
       });

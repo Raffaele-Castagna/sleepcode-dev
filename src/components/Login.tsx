@@ -47,20 +47,31 @@ const Login: React.FC<LoginProps> = () => {
       });
       router.push("/");
     } catch (error: any) {
-      toast.error(error.message, {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
-      });
+      
     }
   };
   useEffect(() => {
-    if (error)
-      toast.error(error.message, {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
-      });
+    if (error){
+    if (error.message == "Firebase: Error (auth/invalid-credential).") {
+    toast.error("Credenziali invalide, riprova!", {
+      position: "top-center",
+      autoClose: 3000,
+      theme: "dark",
+    });}
+  else if (error.message == "Firebase: Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. (auth/too-many-requests)."){
+  toast.error("Hai provato ad entrare troppe volte, resetta la password o aspetta prima di riprovare!", {
+    position: "top-center",
+    autoClose: 3000,
+    theme: "dark",
+  })}
+  else {
+    toast.error(error.message, {
+      position: "top-center",
+      autoClose: 3000,
+      theme: "dark",
+    });
+  }
+}
   }, [error]);
 
   return (

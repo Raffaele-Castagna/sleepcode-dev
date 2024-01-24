@@ -11,7 +11,35 @@ import { error } from "console";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { adminAuth } from "@/firebase/firebase-admin-config";
 
+/** 
+* @swagger
+/api/deleteaccount:
+*   delete:
+ *     summary: Delete the current user
+ *     description: Delete user
+ *     tags:
+ *      - user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               uid:
+ *                 type: string
+ *                 description: The id the user
+ *     responses:
+ *       200:
+ *         description: Success
+ *       204:
+ *         description: User already deleted/does not exist
 
+ *       405:
+ *         description: Method not allowed
+ *       500:
+ *         description: Something went wrong, please try again
+ */
 
 type Data = {
     success: boolean,

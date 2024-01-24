@@ -5,7 +5,46 @@ import { auth, firestore } from "@/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModelAtom";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
+
+/**
+ * @swagger
+ * /api/signup:
+ *   post:
+ *     summary: Creates a new user account
+ *     description: Creates a new user account
+ *     tags:
+ *     - user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The email of the user
+ *               username:
+ *                 type: string
+ *                 description: The username of the user
+ *               password:
+ *                 type: string
+ *                 description: The password of the user
+ *                 format: password
+ *     responses:
+ *       200:
+ *         description: Operation completed successfully
+ *       400:
+ *         description: Bad Request
+ *       405:
+ *         description: Method not allowed
+ *       409:
+ *          description: Email already in Use
+ *       500:
+ *         description: error creating new user
+ */
 
 type Data = {
   success: boolean;
