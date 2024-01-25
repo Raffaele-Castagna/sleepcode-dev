@@ -67,8 +67,7 @@ async function signupHandler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await schema.validate(req.body);
   } catch (error) {
-    console.log((error as Error).message)
-    return res.status(400).send(error as Error);
+    return res.status(400).send((error as Error).message);
   }
 
   try {
