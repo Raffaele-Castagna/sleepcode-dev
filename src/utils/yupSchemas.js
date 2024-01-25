@@ -11,6 +11,8 @@ const emailSchema = Yup.string()
 
   const usrRegSchema = Yup.string()
   .required("Username richiesto!")
+  .min(6,"L'username dev'essere almeno 6 caratteri!")
+  .max(64,"Username troppo grande! (Max:64)")
 
   const pwdSchema = Yup.string()
   .password()

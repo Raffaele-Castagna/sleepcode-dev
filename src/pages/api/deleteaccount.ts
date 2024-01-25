@@ -58,10 +58,12 @@ async function deletehandler(req: NextApiRequest, res:NextApiResponse){
     }
 
     try {   
-            adminAuth.deleteUser(uid)
+            await adminAuth.deleteUser(uid).catch((error:any) => {
+                return res.status(500).send("Errore nell'eliminazione,riprova")
+            })
             const userRef = doc(firestore,"users",uid)
             await deleteDoc(userRef).catch((error) => {
-                return res.status(204).send("Già eliminato")
+                return res.status(500).send("Errore nell'eliminazione, riprova")
             });
             
             return res.status(200).send({success:true});
@@ -70,7 +72,7 @@ async function deletehandler(req: NextApiRequest, res:NextApiResponse){
             
             
     }catch (error) {
-        console.log("Internal error")
+
         return res.status(500).send((error as Error).message);
     
     }

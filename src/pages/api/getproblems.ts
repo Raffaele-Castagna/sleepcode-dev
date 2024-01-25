@@ -1,5 +1,7 @@
 import { firestore } from "@/firebase/firebase";
+import { adminAuth, adminFirestore } from "@/firebase/firebase-admin-config";
 import { DBproblem } from "@/utils/problems/GenericProblem/genericProblem";
+import { Firestore } from "firebase-admin/firestore";
 import {
   collection,
   doc,
@@ -9,6 +11,8 @@ import {
   query,
 } from "firebase/firestore";
 import { NextApiRequest, NextApiResponse } from "next";
+
+const admin = require('firebase-admin');
 
 /**
  * @swagger
@@ -22,7 +26,7 @@ import { NextApiRequest, NextApiResponse } from "next";
  *       200:
  *         description: Operation completed successfully
  *       405:
- *         description: Method not allowed
+ *         description: HTTP method not valid, GET accepted.
  *       500:
  *         description: Something went wrong, please try again
  */
@@ -41,15 +45,15 @@ async function getproblemshandler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
+  
     const q = query(collection(firestore, "problems"), orderBy("order", "asc"));
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocs(q)
     const tmp: DBproblem[] = [];
     querySnapshot.forEach((doc) => {
-      tmp.push({ id: doc.id, ...doc.data() } as DBproblem);
+      tmp.push({...doc.data() } as DBproblem);
     });
     return res.status(200).json(tmp);
   } catch (error) {
-    console.log("Internal error");
     return res.status(500).send((error as Error).message);
   }
 }

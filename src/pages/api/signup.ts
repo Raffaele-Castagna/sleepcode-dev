@@ -67,6 +67,7 @@ async function signupHandler(req: NextApiRequest, res: NextApiResponse) {
   try {
     await schema.validate(req.body);
   } catch (error) {
+    console.log((error as Error).message)
     return res.status(400).send(error as Error);
   }
 
@@ -77,6 +78,7 @@ async function signupHandler(req: NextApiRequest, res: NextApiResponse) {
       email,
       password
     ).catch((error) => {
+      console.log((error as Error).message, 409)
       return res.status(409).send("Email già in utilizzo");
     });
     if (!newUser)
@@ -97,6 +99,7 @@ async function signupHandler(req: NextApiRequest, res: NextApiResponse) {
     await setDoc(doc(firestore, "users", newUser.user.uid), userData);
     return res.status(200).send({ success: true });
   } catch (error) {
+    console.log((error as Error).message, 500)
     return res.status(500).send((error as Error).message);
   }
 }

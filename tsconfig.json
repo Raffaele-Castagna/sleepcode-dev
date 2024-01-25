@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/api/doc.js", "src/pages/api/doc.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/api/doc.js", "src/pages/api/doc.js", "__test__/api.changepassword.test.js"],
   "exclude": ["node_modules"]
 }

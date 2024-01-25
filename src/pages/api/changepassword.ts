@@ -1,4 +1,3 @@
-
 import { NextApiRequest, NextApiResponse } from "next";
 import * as Yup from "yup";
 import { regSchema, uSchema } from "@/utils/yupSchemas"
@@ -7,14 +6,12 @@ import { firestore } from "@/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModelAtom";
-import { adminApp, adminAuth } from "@/firebase/firebase-admin-config";
-
-
-
+import { adminApp, adminAuth, adminFirestore } from "@/firebase/firebase-admin-config";
 type Data = {
     success: boolean,
     error?: string;
   };
+
 
 /**
  * @swagger
@@ -64,12 +61,10 @@ async function changepwhandler(req: NextApiRequest, res:NextApiResponse){
     try {
         await schema.validate(req.body);
     }catch(error){
-        return res.status(400).send((error as Error).message)
+        return res.status(401).send((error as Error).message)
     }
 
     try {
-        
-        
         const {uid,password} = req.body;
         adminAuth.getUser(uid).catch((error) => {
             return res.status(204).send("Utente inesistente")
