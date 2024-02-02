@@ -39,8 +39,8 @@ type Data = {
  *         description: Operation completed successfully
  *       204:
  *         description: No matching uid (user does not exist)
- *       401:
- *         description: Invalid username and password combination
+ *       400:
+ *         description: Invalid username or password combination
  *       405:
  *         description: Method not allowed
  *       500:
