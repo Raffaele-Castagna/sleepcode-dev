@@ -191,7 +191,8 @@ const Registr: React.FC<RegistrProps> = () => {
         <div className="text-sm font-medium text-gray-500">
           {" "}
           Hai già un account?{" "}
-          <a href="#" className="text-blue-700 hover:underline">
+          <a href="#" className="text-blue-700 hover:underline"
+          onClick={() => handleClick("login")}>
             {" "}
             Login
           </a>
