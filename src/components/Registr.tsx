@@ -82,14 +82,14 @@ const Registr: React.FC<RegistrProps> = () => {
             toast.success("Account creato con successo!",{position:"top-center",toastId:"success",theme:"dark"})
             router.push('/')*/
     } catch (error: any) {
-      if (error.message === "Email già in utilizzo") {
+      if ((error as Error).message === "Email già in utilizzo") {
         toast.error("Email già in utilizzo", {
           position: "top-center",
           autoClose: 3000,
           theme: "dark",
         });
       } else {
-        toast.error(error.message, {
+        toast.error((error as Error).message, {
           position: "top-center",
           autoClose: 3000,
           theme: "dark",
@@ -101,7 +101,11 @@ const Registr: React.FC<RegistrProps> = () => {
   };
 
   useEffect(() => {
-    if (error) alert(error.message);
+    if (error) toast.error(error.message, {
+      position: "top-center",
+      autoClose: 3000,
+      theme: "dark",
+    });
   }, [error]);
 
   return (
@@ -187,7 +191,8 @@ const Registr: React.FC<RegistrProps> = () => {
         <div className="text-sm font-medium text-gray-500">
           {" "}
           Hai già un account?{" "}
-          <a href="#" className="text-blue-700 hover:underline">
+          <a href="#" className="text-blue-700 hover:underline"
+          onClick={() => handleClick("login")}>
             {" "}
             Login
           </a>
